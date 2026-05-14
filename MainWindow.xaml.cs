@@ -146,7 +146,7 @@ namespace CyberSecurityGUI
                 Margin = new Thickness(5),
                 MaxWidth = 540,
                 HorizontalAlignment = align,
-                Child = stack, 
+                Child = stack,
                 BorderBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x22, 0x22)),
                 BorderThickness = new Thickness(1, 0, 0, 0),
                 Effect = new DropShadowEffect
