@@ -142,6 +142,7 @@ namespace CyberSecurityGUI
             {
                 Background = background,
                 CornerRadius = new CornerRadius(2),
+
                 Padding = new Thickness(14),
                 Margin = new Thickness(5),
                 MaxWidth = 540,
