@@ -149,7 +149,7 @@ namespace CyberSecurityGUI
                 Child = stack,
                 BorderBrush = new SolidColorBrush(Color.FromRgb(0xFF, 0x22, 0x22)),
                 BorderThickness = new Thickness(1, 0, 0, 0),
-                Effect = new DropShadowEffect
+                Effect = new DropShadowEffect 
                 {
                     Color = Color.FromRgb(0xFF, 0x00, 0x00),
                     BlurRadius = 8,
