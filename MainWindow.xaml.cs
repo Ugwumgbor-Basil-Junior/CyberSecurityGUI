@@ -121,7 +121,7 @@ namespace CyberSecurityGUI
             stack.Children.Add(new TextBlock
             {
                 Text = isBot ? "⚠ CYBERBOT" : "// YOU",
-                Foreground = labelColor,
+                Foreground = labelColor, 
                 FontSize = 10,
                 FontFamily = new FontFamily("Consolas"),
                 FontWeight = FontWeights.Bold,
