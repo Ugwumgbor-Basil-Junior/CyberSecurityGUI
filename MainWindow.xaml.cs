@@ -129,6 +129,7 @@ namespace CyberSecurityGUI
             });
 
             stack.Children.Add(new TextBlock 
+
             {
                 Text = message,
                 Foreground = new SolidColorBrush(Color.FromRgb(0xE8, 0xE8, 0xE8)),
