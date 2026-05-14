@@ -111,7 +111,7 @@ namespace CyberSecurityGUI
 
             var anim = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(250));
             row.BeginAnimation(OpacityProperty, anim);
-        }
+        } 
 
         private Border BuildBubble(string message, Brush background,
             Brush labelColor, HorizontalAlignment align, bool isBot)
