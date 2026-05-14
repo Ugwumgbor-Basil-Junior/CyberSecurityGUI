@@ -128,7 +128,7 @@ namespace CyberSecurityGUI
                 Margin = new Thickness(0, 0, 0, 4)
             });
 
-            stack.Children.Add(new TextBlock
+            stack.Children.Add(new TextBlock 
             {
                 Text = message,
                 Foreground = new SolidColorBrush(Color.FromRgb(0xE8, 0xE8, 0xE8)),
