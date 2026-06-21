@@ -12,7 +12,7 @@ namespace CyberSecurityGUI
         private string userInterest = "";
         private string lastTopic = "";
         private Random rand = new Random();
-        private Sentiment sentiment = new Sentiment();
+        private Sentiment sentiment = new Sentiment(); 
 
         // ===== DELEGATE USAGE =====
         private ResponseHandler responseHandler;

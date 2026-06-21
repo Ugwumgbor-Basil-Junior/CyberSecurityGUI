@@ -140,14 +140,124 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- ===== TAB CONTROL STYLE (terminal look) ===== -->
+        <Style x:Key="TerminalTabItem" TargetType="TabItem">
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="Bd" Background="Transparent"
+                                BorderBrush="{StaticResource AccentRed}"
+                                BorderThickness="0,0,0,2"
+                                Padding="{TemplateBinding Padding}"
+                                Margin="0,0,2,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                               ContentSource="Header"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1A0000"/>
+                                <Setter Property="Foreground" Value="{StaticResource AccentRed}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{StaticResource AccentOrange}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TerminalTabControl" TargetType="TabControl">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="ItemContainerStyle" Value="{StaticResource TerminalTabItem}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Border Grid.Row="0" Background="{StaticResource BgPanel}"
+                                    BorderBrush="{StaticResource BorderCol}" BorderThickness="0,0,0,1">
+                                <TabPanel IsItemsHost="True" Margin="16,0,0,0"/>
+                            </Border>
+                            <Border Grid.Row="1">
+                                <ContentPresenter ContentSource="SelectedContent"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== TASK FORM TEXTBOX/DATEPICKER ===== -->
+        <Style x:Key="FieldBoxStyle" TargetType="TextBox" BasedOn="{StaticResource InputBoxStyle}">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="PanelButtonStyle" TargetType="Button" BasedOn="{StaticResource SendButtonStyle}">
+            <Setter Property="Height" Value="34"/>
+        </Style>
+
+        <Style x:Key="OutlineButtonStyle" TargetType="Button" BasedOn="{StaticResource ChipStyle}">
+            <Setter Property="Padding" Value="14,7"/>
+        </Style>
+
+        <!-- ===== QUIZ OPTION BUTTON ===== -->
+        <Style x:Key="QuizOptionStyle" TargetType="Button">
+            <Setter Property="Background" Value="#0D0D0D"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentRed}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontFamily" Value="Consolas"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="2" Padding="14,10">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1A0000"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource AccentOrange}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===== TASK / LOG LIST ITEM CONTAINERS ===== -->
+        <Style x:Key="PanelBorderStyle" TargetType="Border">
+            <Setter Property="Background" Value="#0D0D0D"/>
+            <Setter Property="BorderBrush" Value="#2A0000"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
     </Window.Resources>
 
     <Grid Background="{StaticResource BgMain}">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="44"/>
-            <RowDefinition Height="64"/>
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
@@ -186,59 +296,292 @@
             </Grid>
         </Border>
 
-        <!-- CHAT AREA -->
-        <ScrollViewer Grid.Row="1" x:Name="ChatScroll"
-                      Style="{StaticResource ChatScrollViewer}" Padding="0,8">
-            <StackPanel x:Name="MessagePanel" Margin="16,4"/>
-        </ScrollViewer>
+        <!-- MAIN TABS -->
+        <TabControl Grid.Row="1" x:Name="MainTabs"
+                    Style="{StaticResource TerminalTabControl}"
+                    SelectionChanged="MainTabs_SelectionChanged">
 
-        <!-- QUICK CHIPS -->
-        <Border Grid.Row="2" Background="{StaticResource BgPanel}"
-                BorderBrush="{StaticResource BorderCol}" BorderThickness="0,1,0,0">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
-                        HorizontalAlignment="Left" Margin="16,0">
-                <TextBlock Text="// quick access:" Foreground="{StaticResource TextMuted}"
-                           FontSize="11" FontFamily="Consolas"
-                           VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <Button Style="{StaticResource ChipStyle}" Content="[PASSWORDS]"
-                        Click="Chip_Click" Tag="Tell me about passwords"/>
-                <Button Style="{StaticResource ChipStyle}" Content="[PHISHING]"
-                        Click="Chip_Click" Tag="What is phishing?"/>
-                <Button Style="{StaticResource ChipStyle}" Content="[MALWARE]"
-                        Click="Chip_Click" Tag="Tell me about malware"/>
-                <Button Style="{StaticResource ChipStyle}" Content="[PRIVACY]"
-                        Click="Chip_Click" Tag="Tell me about privacy"/>
-                <Button Style="{StaticResource ChipStyle}" Content="[HELP]"
-                        Click="Chip_Click" Tag="What can you help me with?"/>
-            </StackPanel>
-        </Border>
+            <!-- ========================== CHAT TAB ========================== -->
+            <TabItem Header="[ CHAT ]">
+                <Grid Background="{StaticResource BgMain}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="44"/>
+                        <RowDefinition Height="64"/>
+                    </Grid.RowDefinitions>
 
-        <!-- INPUT BAR -->
-        <Border Grid.Row="3" Background="{StaticResource BgPanel}"
-                BorderBrush="{StaticResource BorderCol}"
-                BorderThickness="0,1,0,0" Padding="16,10">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="100"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="&gt;_" Foreground="#FF2222"
-                           FontFamily="Consolas" FontSize="16"
-                           VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox Grid.Column="1" x:Name="InputBox"
-                         Style="{StaticResource InputBoxStyle}"
-                         Foreground="#E8E8E8"
-                         Background="#0D0D0D"
-                         FontFamily="Segoe UI"
-                         Height="38" VerticalContentAlignment="Center"
-                         KeyDown="InputBox_KeyDown"/>
-                <Button Grid.Column="2" x:Name="SendButton"
-                        Style="{StaticResource SendButtonStyle}"
-                        Content="EXECUTE" Height="38" Margin="8,0,0,0"
-                        Click="SendButton_Click"/>
-            </Grid>
-        </Border>
+                    <!-- CHAT AREA -->
+                    <ScrollViewer Grid.Row="0" x:Name="ChatScroll"
+                                  Style="{StaticResource ChatScrollViewer}" Padding="0,8">
+                        <StackPanel x:Name="MessagePanel" Margin="16,4"/>
+                    </ScrollViewer>
+
+                    <!-- QUICK CHIPS -->
+                    <Border Grid.Row="1" Background="{StaticResource BgPanel}"
+                            BorderBrush="{StaticResource BorderCol}" BorderThickness="0,1,0,0">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                                    HorizontalAlignment="Left" Margin="16,0">
+                            <TextBlock Text="// quick access:" Foreground="{StaticResource TextMuted}"
+                                       FontSize="11" FontFamily="Consolas"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <Button Style="{StaticResource ChipStyle}" Content="[PASSWORDS]"
+                                    Click="Chip_Click" Tag="Tell me about passwords"/>
+                            <Button Style="{StaticResource ChipStyle}" Content="[PHISHING]"
+                                    Click="Chip_Click" Tag="What is phishing?"/>
+                            <Button Style="{StaticResource ChipStyle}" Content="[MALWARE]"
+                                    Click="Chip_Click" Tag="Tell me about malware"/>
+                            <Button Style="{StaticResource ChipStyle}" Content="[PRIVACY]"
+                                    Click="Chip_Click" Tag="Tell me about privacy"/>
+                            <Button Style="{StaticResource ChipStyle}" Content="[HELP]"
+                                    Click="Chip_Click" Tag="What can you help me with?"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- INPUT BAR -->
+                    <Border Grid.Row="2" Background="{StaticResource BgPanel}"
+                            BorderBrush="{StaticResource BorderCol}"
+                            BorderThickness="0,1,0,0" Padding="16,10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="&gt;_" Foreground="#FF2222"
+                                       FontFamily="Consolas" FontSize="16"
+                                       VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <TextBox Grid.Column="1" x:Name="InputBox"
+                                     Style="{StaticResource InputBoxStyle}"
+                                     Foreground="#E8E8E8"
+                                     Background="#0D0D0D"
+                                     FontFamily="Segoe UI"
+                                     Height="38" VerticalContentAlignment="Center"
+                                     KeyDown="InputBox_KeyDown"/>
+                            <Button Grid.Column="2" x:Name="SendButton"
+                                    Style="{StaticResource SendButtonStyle}"
+                                    Content="EXECUTE" Height="38" Margin="8,0,0,0"
+                                    Click="SendButton_Click"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- ========================== TASKS TAB ========================== -->
+            <TabItem Header="[ TASKS ]">
+                <Grid Margin="20,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="// TASK ASSISTANT — cybersecurity to-do list"
+                               Foreground="{StaticResource AccentRed}" FontFamily="Consolas"
+                               FontSize="13" FontWeight="Bold" Margin="0,0,0,12"/>
+
+                    <!-- ADD TASK FORM -->
+                    <Border Grid.Row="1" Style="{StaticResource PanelBorderStyle}" Padding="14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="110"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" Foreground="{StaticResource TextMuted}"
+                                       FontFamily="Consolas" FontSize="10" Margin="2,0,8,4"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Description" Foreground="{StaticResource TextMuted}"
+                                       FontFamily="Consolas" FontSize="10" Margin="2,0,8,4"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Reminder date" Foreground="{StaticResource TextMuted}"
+                                       FontFamily="Consolas" FontSize="10" Margin="2,0,8,4"/>
+
+                            <TextBox Grid.Row="1" Grid.Column="0" x:Name="TaskTitleBox"
+                                     Style="{StaticResource FieldBoxStyle}" Margin="0,0,8,0"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="TaskDescBox"
+                                     Style="{StaticResource FieldBoxStyle}" Margin="0,0,8,0"/>
+                            <DatePicker Grid.Row="1" Grid.Column="2" x:Name="TaskReminderPicker"
+                                        Height="34" Margin="0,0,8,0" Background="#0D0D0D"
+                                        BorderBrush="#FF2222"/>
+                            <Button Grid.Row="1" Grid.Column="3" Content="ADD TASK"
+                                    Style="{StaticResource PanelButtonStyle}"
+                                    Click="AddTaskButton_Click"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- STATUS + REFRESH -->
+                    <Grid Grid.Row="2" Margin="0,10,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="TaskStatusText"
+                                   Foreground="{StaticResource TextMuted}" FontFamily="Consolas"
+                                   FontSize="11" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                        <Button Grid.Column="1" x:Name="RefreshTasksButton" Content="[REFRESH]"
+                                Style="{StaticResource OutlineButtonStyle}"
+                                Click="RefreshTasksButton_Click"/>
+                    </Grid>
+
+                    <!-- TASK LIST -->
+                    <ScrollViewer Grid.Row="3" Style="{StaticResource ChatScrollViewer}">
+                        <ItemsControl x:Name="TaskListItems">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource PanelBorderStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding StatusDisplay}"
+                                                               Foreground="{StaticResource AccentOrange}"
+                                                               FontFamily="Consolas" FontSize="10" FontWeight="Bold"
+                                                               Margin="0,0,8,0"/>
+                                                    <TextBlock Text="{Binding Title}"
+                                                               Foreground="{StaticResource TextPrimary}"
+                                                               FontFamily="Consolas" FontSize="13" FontWeight="Bold"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding Description}"
+                                                           Foreground="{StaticResource TextMuted}"
+                                                           FontFamily="Consolas" FontSize="11"
+                                                           Margin="0,4,0,0" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding ReminderDisplay}"
+                                                           Foreground="{StaticResource AccentRed}"
+                                                           FontFamily="Consolas" FontSize="10" Margin="0,4,0,0"/>
+                                            </StackPanel>
+                                            <Button Grid.Column="1" Content="✔ DONE" Tag="{Binding Id}"
+                                                    Style="{StaticResource OutlineButtonStyle}"
+                                                    Click="CompleteTask_Click" Margin="8,0,4,0"
+                                                    VerticalAlignment="Center"/>
+                                            <Button Grid.Column="2" Content="✘ DELETE" Tag="{Binding Id}"
+                                                    Style="{StaticResource OutlineButtonStyle}"
+                                                    Click="DeleteTask_Click" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <!-- ========================== QUIZ TAB ========================== -->
+            <TabItem Header="[ QUIZ ]">
+                <Grid Margin="20,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="// CYBERSECURITY KNOWLEDGE QUIZ"
+                                   Foreground="{StaticResource AccentRed}" FontFamily="Consolas"
+                                   FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="StartQuizButton" Content="START QUIZ"
+                                Style="{StaticResource PanelButtonStyle}"
+                                Click="StartQuizButton_Click"/>
+                    </Grid>
+
+                    <TextBlock Grid.Row="1" x:Name="QuizQuestionNumberText"
+                               Text="Press START QUIZ to begin."
+                               Foreground="{StaticResource TextMuted}" FontFamily="Consolas" FontSize="11"/>
+
+                    <TextBlock Grid.Row="2" x:Name="QuizQuestionText"
+                               Text="" TextWrapping="Wrap"
+                               Foreground="{StaticResource TextPrimary}" FontFamily="Consolas"
+                               FontSize="15" FontWeight="Bold" Margin="0,10,0,14"/>
+
+                    <ScrollViewer Grid.Row="3" Style="{StaticResource ChatScrollViewer}">
+                        <ItemsControl x:Name="QuizOptionsPanel">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding}" Tag="{Binding}"
+                                            Style="{StaticResource QuizOptionStyle}"
+                                            Click="QuizOption_Click" HorizontalAlignment="Stretch"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <TextBlock Grid.Row="4" x:Name="QuizFeedbackText"
+                               Text="" TextWrapping="Wrap"
+                               Foreground="{StaticResource AccentOrange}" FontFamily="Consolas"
+                               FontSize="12" Margin="0,10,0,8"/>
+
+                    <Grid Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" x:Name="QuizScoreText" Text="Score: 0 / 0"
+                                   Foreground="{StaticResource TextMuted}" FontFamily="Consolas"
+                                   FontSize="11" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="NextQuestionButton" Content="NEXT QUESTION"
+                                Style="{StaticResource PanelButtonStyle}" IsEnabled="False"
+                                Click="NextQuestionButton_Click"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- ========================== ACTIVITY LOG TAB ========================== -->
+            <TabItem Header="[ LOG ]">
+                <Grid Margin="20,16">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="// ACTIVITY LOG — recent bot actions"
+                                   Foreground="{StaticResource AccentRed}" FontFamily="Consolas"
+                                   FontSize="13" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="RefreshLogButton" Content="[REFRESH]"
+                                Style="{StaticResource OutlineButtonStyle}"
+                                Click="RefreshLogButton_Click"/>
+                        <Button Grid.Column="2" x:Name="ShowMoreLogButton" Content="[SHOW ALL]"
+                                Style="{StaticResource OutlineButtonStyle}"
+                                Click="ShowMoreLogButton_Click"/>
+                    </Grid>
+
+                    <ScrollViewer Grid.Row="1" Style="{StaticResource ChatScrollViewer}">
+                        <ItemsControl x:Name="ActivityLogItems">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource PanelBorderStyle}">
+                                        <TextBlock Text="{Binding}" TextWrapping="Wrap"
+                                                   Foreground="{StaticResource TextPrimary}"
+                                                   FontFamily="Consolas" FontSize="12"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
 
     </Grid>
 </Window>

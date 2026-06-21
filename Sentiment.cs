@@ -54,4 +54,4 @@ namespace CyberSecurityGUI
             return handler(sentiment, input);
         }
     }
-}
+};
