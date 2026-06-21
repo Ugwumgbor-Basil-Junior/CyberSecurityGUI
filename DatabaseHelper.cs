@@ -12,7 +12,7 @@ namespace CyberSecurityGUI.Data
         {
             return new MySqlConnection(ConnectionString); 
         }
-
+         
         public static void EnsureDatabaseExists()
         {
             try
