@@ -12,7 +12,7 @@ namespace CyberSecurityGUI.Services
     {
         private static readonly List<string> _entries = new();
 
-        public static void Log(string description)
+        public static void Log(string description) 
         {
             string entry = $"[{DateTime.Now:HH:mm:ss}] {description}";
             _entries.Add(entry);
