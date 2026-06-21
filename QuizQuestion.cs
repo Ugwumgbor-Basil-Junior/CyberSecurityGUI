@@ -10,3 +10,4 @@ namespace CyberSecurityGUI.Models
         public bool IsTrueFalse { get; set; }
     }
 }
+ 

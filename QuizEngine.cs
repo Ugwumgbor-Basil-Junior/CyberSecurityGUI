@@ -17,7 +17,7 @@ namespace CyberSecurityGUI.Services
         public bool IsActive => _currentIndex >= 0 && _currentIndex < _session.Count;
         public int Score => _score;
         public int TotalAnswered { get; private set; }
-        public int TotalQuestions => _session.Count;
+        public int TotalQuestions => _session.Count; 
         public int CurrentNumber => _currentIndex + 1;
 
         public QuizEngine()
