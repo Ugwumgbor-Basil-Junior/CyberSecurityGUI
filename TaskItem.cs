@@ -14,7 +14,7 @@ namespace CyberSecurityGUI.Models
 
         public string ReminderDisplay =>
             ReminderDate.HasValue ? $"Reminder: {ReminderDate.Value:ddd, dd MMM yyyy}" : "No reminder set";
-
+         
         public string StatusDisplay => IsCompleted ? "✔ Completed" : "⏳ Pending";
     }
 }

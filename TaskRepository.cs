@@ -16,7 +16,7 @@ namespace CyberSecurityGUI.Data
 
         // Friendly display helpers used directly by the XAML bindings.
         public string StatusDisplay => IsCompleted ? "DONE" : "PENDING";
-        public string ReminderDisplay => ReminderDate.HasValue
+        public string ReminderDisplay => ReminderDate.HasValue 
             ? $"Reminder: {ReminderDate.Value:dd MMM yyyy}"
             : "No reminder set";
     }

@@ -19,7 +19,7 @@ namespace CyberSecurityGUI.Services
         private int? _pendingTaskId;
         private string? _pendingTaskTitle;
 
-        public bool TryHandle(string rawInput, out string response)
+        public bool TryHandle(string rawInput, out string response) 
         {
             string input = rawInput.Trim();
             string lower = input.ToLower();
