@@ -8,7 +8,7 @@ namespace CyberSecurityGUI.Services
     // ===== ACTIVITY LOG (Task 4) =====
     // A simple in-memory list of everything the bot has done this session.
     // Static so every part of the app (chat, tasks, quiz, NLP) can log to the same place.
-    public static class ActivityLogger
+    public static class ActivityLogger 
     {
         private static readonly List<string> _entries = new();
 

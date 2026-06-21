@@ -9,7 +9,7 @@ namespace CyberSecurityGUI.Data
             "Server=localhost;Port=3306;Database=cybersecurity_db;Uid=root;Pwd=JuniorBasil@2004;";
 
         public static MySqlConnection GetConnection()
-        {
+        { 
             return new MySqlConnection(ConnectionString); 
         }
          

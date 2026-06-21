@@ -15,7 +15,7 @@ namespace CyberSecurityGUI
     {
         private readonly Chatbot _bot = new Chatbot();
         private readonly TaskRepository _taskRepo = new TaskRepository();
-        private readonly TaskAssistant _taskAssistant = new TaskAssistant();
+        private readonly TaskAssistant _taskAssistant = new TaskAssistant(); 
         private readonly QuizEngine _quiz = new QuizEngine();
 
         private bool _quizAnswered = false;
